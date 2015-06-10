@@ -1,0 +1,35 @@
+DROP TABLE IF EXISTS year;
+CREATE TABLE year {
+	year INTEGER PRIMARY KEY;
+}
+
+DROP TABLE IF EXISTS camp;
+CREATE TABLE camp {
+	cid INTEGER PRIMARY KEY,
+	name VARCHAR,
+	year INTEGER,
+	FOREIGN KEY (year) REFERENCES year(year)
+}
+
+DROP TABLE IF EXISTS group;
+CREATE TABLE group {
+	gid INTEGER PRIMARY KEY,
+	name VARCHAR,
+	camp INTEGER,
+	FOREIGN KEY (camp) REFERENCES camp(cid)
+}
+
+DROP TABLE IF EXISTS kid;
+CREATE TABLE kid {
+	kid INTEGER PRIMARY KEY,
+	number VARCHAR,
+	firstname VARCHAR,
+	lastname VARCHAR,
+	group INTEGER,
+	account INTEGER,
+	FOREIGN KEY (group) REFERENCES group(gid),
+	FOREIGN KEY (account) REFERENCES account(aid)
+}
+
+
+
