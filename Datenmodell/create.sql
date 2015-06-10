@@ -1,35 +1,60 @@
-DROP TABLE IF EXISTS year;
-CREATE TABLE year {
-	year INTEGER PRIMARY KEY;
-}
+SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS campYear;
+CREATE TABLE campYear (
+	campYear INTEGER PRIMARY KEY
+);
 
 DROP TABLE IF EXISTS camp;
-CREATE TABLE camp {
+CREATE TABLE camp (
 	cid INTEGER PRIMARY KEY,
-	name VARCHAR,
-	year INTEGER,
-	FOREIGN KEY (year) REFERENCES year(year)
-}
+	name VARCHAR(50),
+	campYear INTEGER,
+	FOREIGN KEY (campYear) REFERENCES campYear(campYear)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
 
-DROP TABLE IF EXISTS group;
-CREATE TABLE group {
+DROP TABLE IF EXISTS campGroup;
+CREATE TABLE campGroup (
 	gid INTEGER PRIMARY KEY,
-	name VARCHAR,
+	name VARCHAR(50),
 	camp INTEGER,
 	FOREIGN KEY (camp) REFERENCES camp(cid)
-}
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS account;
+CREATE TABLE account (
+	aid INTEGER PRIMARY KEY,
+	name VARCHAR(50),
+	balance DECIMAL(8,2),
+	description VARCHAR(250)
+);
+
+DROP TABLE IF EXISTS bookentry;
+CREATE TABLE bookentry (
+	bid INTEGER PRIMARY KEY,
+	fromAccount INTEGER,
+	toAccount INTEGER,
+	amount DECIMAL(8,2),
+	date DATETIME,
+	description VARCHAR(250),
+	FOREIGN KEY (fromAccount) REFERENCES account(aid)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (toAccount) REFERENCES account(aid)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 DROP TABLE IF EXISTS kid;
-CREATE TABLE kid {
+CREATE TABLE kid (
 	kid INTEGER PRIMARY KEY,
-	number VARCHAR,
-	firstname VARCHAR,
-	lastname VARCHAR,
-	group INTEGER,
+	number VARCHAR(4),
+	firstname VARCHAR(50),
+	lastname VARCHAR(50),
+	campGroup INTEGER,
 	account INTEGER,
-	FOREIGN KEY (group) REFERENCES group(gid),
+	FOREIGN KEY (campgroup) REFERENCES campGroup(gid)
+    ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (account) REFERENCES account(aid)
-}
-
-
-
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+SET FOREIGN_KEY_CHECKS=1;
